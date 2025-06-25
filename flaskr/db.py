@@ -26,21 +26,13 @@ def close_db(e=None):
 
 def init_app(app):
     """Initialize the database with the given app"""
+    print('hola')
+
     db.init_app(app)
     app.teardown_appcontext(close_db)
 
-    # Import models here to register them with Base metadata
-    # This avoids circular imports
-    def register_models():
-        from .todo_api.users.models import User
-        # Import other models here
-        return [User]  # Return list of model classes for use elsewhere if needed
-
-    # Create a CLI command for initializing the database
-    @app.cli.command("init-db")
-    def init_db():
-        """Initialize the database."""
-        # Make sure all models are imported before creating tables
-        register_models()
-        Base.metadata.create_all(engine)
-        click.echo("Database tables created.")
+    # with app.app_context():
+    #     from .todo_api.users.models import User
+    #     # Import other models here if needed
+    #     Base.metadata.create_all(engine)
+    #     print("Database tables created.")

@@ -25,7 +25,7 @@ BUCKET_NAME = os.getenv("AWS_BUCKET_NAME", "up-to-do-bucket")
 
 engine = create_engine(os.environ.get(
     'DATABASE_URL',
-    'postgresql://postgres:postgres@localhost:5432/flaskr'
+    'postgresql://postgres:admin@localhost:5432/flaskr'
 ), echo=True)
 
 # Create session factory

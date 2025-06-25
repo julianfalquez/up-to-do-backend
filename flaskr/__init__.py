@@ -1,10 +1,10 @@
 import os
 from flask import Flask
+from .db import init_app as db_init_app
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-
     # Load configuration
     from .config import Config
     app.config.from_object(Config)
@@ -23,8 +23,9 @@ def create_app(test_config=None):
         pass
 
     # Initialize the database
-    from .db import db
-    db.init_app(app)
+    print('Creating Flask app...')
+    print(db)
+    db_init_app(app)
 
     # Initialize extensions
     from .extensions import init_cors

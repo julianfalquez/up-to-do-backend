@@ -26,7 +26,7 @@ def login():
         return jsonify({"error": "Login failed", "details": error_details}), 400
 
     # Generate token and set it as a cookie in the response
-    token = generate_token(user)
+    token = generate_token(user.username)  # Pass username string, not user object
     resp = create_login_response(user, generate_token)
     resp.set_cookie('token', token, httponly=True, secure=True, samesite='None')
     return resp
@@ -34,7 +34,7 @@ def login():
 
 def register_user():
     username, password, email, dob = extract_registration_data()
-
+    print(f"Registration data: username={username}, email={email}, dob={dob}")
     errors = validate_registration_fields(username, password, email, dob)
     if errors:
         return jsonify({"error": "Registration failed", "details": errors}), 400
