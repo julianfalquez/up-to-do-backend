@@ -3,7 +3,7 @@ from flask import g, redirect, url_for, jsonify, request, make_response
 from ...config import SessionLocal
 from ..users.models import User
 from ...utils.jwt import (
-    generate_token, verify_token
+    generate_token, verify_token, generate_refresh_token
 )
 from .utils import (
     validate_login_data, get_user_by_username, verify_password, create_login_response,
@@ -26,9 +26,12 @@ def login():
         return jsonify({"error": "Login failed", "details": error_details}), 400
 
     # Generate token and set it as a cookie in the response
-    token = generate_token(user)
+    token = generate_token(username)
+    refresh_token = generate_refresh_token(username)
+    print('Generated token:', token)
     resp = create_login_response(user, generate_token)
     resp.set_cookie('token', token, httponly=True, secure=True, samesite='None')
+    resp.set_cookie('refresh_token', refresh_token, httponly=True, secure=True, samesite='None')
     return resp
 
 

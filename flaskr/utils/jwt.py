@@ -10,7 +10,15 @@ def generate_token(username):
         'sub': username,
         'exp': expiration_time
     }
-    print('Secre key',app.config['SECRET_KEY'])
+    token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+    return token
+
+def generate_refresh_token(username):
+    expiration_time = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+    payload = {
+        'sub': username,
+        'exp': expiration_time
+    }
     token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
     return token
 
@@ -18,7 +26,6 @@ def verify_token(token):
     try:
         # Decode the token
         data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-        print('Data',data)
         return data['sub']
     except jwt.ExpiredSignatureError:
         return None
