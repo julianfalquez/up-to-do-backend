@@ -37,7 +37,7 @@ def login():
 
 def register_user():
     username, password, email, dob = extract_registration_data()
-
+    print(f"Registration data: username={username}, email={email}, dob={dob}")
     errors = validate_registration_fields(username, password, email, dob)
     if errors:
         return jsonify({"error": "Registration failed", "details": errors}), 400
